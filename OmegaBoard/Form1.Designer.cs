@@ -28,13 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.HomeBoard = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // HomeBoard
+            // 
+            this.HomeBoard.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.HomeBoard.Location = new System.Drawing.Point(13, 43);
+            this.HomeBoard.Name = "HomeBoard";
+            this.HomeBoard.Size = new System.Drawing.Size(710, 344);
+            this.HomeBoard.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(13, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(735, 399);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.HomeBoard);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -42,6 +64,9 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.FlowLayoutPanel HomeBoard;
+        private System.Windows.Forms.Button button1;
     }
 }
 
