@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace OmegaBoard
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, Views.IView
     {
         private BoardManager boardManager;
 
@@ -24,8 +24,14 @@ namespace OmegaBoard
 
         private void button1_Click(object sender, EventArgs e)
         {
-            boardManager.AddLane(HomeBoard);
+            boardManager.AddLane(HomeBoard, "test");
         }
+
+        public void AddElement(string elementName)
+        {
+            boardManager.AddLane(HomeBoard, "test");
+        }
+        
     }
     class ControlWrapper
     {

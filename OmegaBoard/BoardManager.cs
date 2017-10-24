@@ -9,7 +9,7 @@ namespace OmegaBoard
 {
     public class BoardManager
     {
-        public void AddLane(FlowLayoutPanel homeBoard)
+        public void AddLane(FlowLayoutPanel homeBoard, string laneName)
         {
             //first get total lanes
             var existingLanes = homeBoard.Controls;
@@ -17,7 +17,7 @@ namespace OmegaBoard
             //add new lane
             var newLane = new GroupBox();
             newLane.Name = "Lane" + (existingNumberofLanes + 1);
-            newLane.Text = "test" + (existingNumberofLanes + 1);
+            newLane.Text = laneName;
             newLane.Width = 200;
             newLane.Height = homeBoard.Height - 30;
             var newFlow = new FlowLayoutPanel();
