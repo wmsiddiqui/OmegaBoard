@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OmegaBoard.Models
 {
@@ -56,6 +53,12 @@ namespace OmegaBoard.Models
             {
                 throw new Exception("Unable to remove card from the lane");
             }
+        }
+
+        public Lane(string name)
+        {
+            _name = name;
+            _cards = new List<Card>();
         }
     }
 }

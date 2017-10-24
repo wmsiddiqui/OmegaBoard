@@ -48,6 +48,8 @@ namespace OmegaBoard.Models
 
         public Card(string cardText = null)
         {
+            _links = new Dictionary<string, string>();
+            _comments = new List<Comment>();
             _cardText = cardText;
             _created = DateTime.Now;
         }
