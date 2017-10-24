@@ -9,5 +9,6 @@ namespace OmegaBoard.Views
     public interface IView
     {
         void AddElement(string elementName);
+
     }
 }
