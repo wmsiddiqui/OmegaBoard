@@ -9,6 +9,7 @@ namespace OmegaBoard
 {
     public class BoardManager
     {
+        Random rnd = new Random();
         public void AddLane(FlowLayoutPanel homeBoard, string laneName)
         {
             //first get total lanes
@@ -30,23 +31,40 @@ namespace OmegaBoard
                 e.Effect = DragDropEffects.Move;
             };
             newFlow.AllowDrop = true;
+
+
+            //Add Create Button
+            var createButton = new Button();
+            createButton.Text = "Add Card";
+            createButton.Name = "AddCardButton";
+            createButton.Width = newFlow.Width - 10;
+            createButton.Click += (s, e) =>
+            {
+                newFlow.Controls.Add(CreateDraggableButton(createButton.Width));
+            };
+
+            createButton.Click += (s, e) =>
+            {
+                MoveCreateButtonToBottomOfLane(newFlow, createButton);
+            };
+
             newFlow.DragDrop += (s, e) =>
             {
                 Control userControl = GetControl(e);
                 newFlow.Controls.Add(userControl);
-            };
-            //create temporary button to drag
-            var newButton = new Button();
-            newButton.Width = newFlow.Width - 10;
-            newButton.MouseDown += (s, e) =>
-            {
-                newButton.DoDragDrop(new ControlWrapper(newButton), DragDropEffects.Move);
+                MoveCreateButtonToBottomOfLane(newFlow, createButton);
             };
 
             //add controls to board
-            newFlow.Controls.Add(newButton);
+            newFlow.Controls.Add(createButton);
             newLane.Controls.Add(newFlow);
             homeBoard.Controls.Add(newLane);
+        }
+
+        private void MoveCreateButtonToBottomOfLane(FlowLayoutPanel newFlow, Button createButton)
+        {
+            newFlow.Controls.Remove(createButton);
+            newFlow.Controls.Add(createButton);
         }
 
         private Control GetControl(DragEventArgs e)
@@ -54,6 +72,23 @@ namespace OmegaBoard
             ControlWrapper controlWrapper = e.Data.GetData(typeof(ControlWrapper)) as ControlWrapper;
             Control userControl = controlWrapper.Control as Control;
             return userControl;
+        }
+
+        private Button CreateDraggableButton(int width)
+        {
+            //create temporary button to drag
+            var newButton = new Button();
+            newButton.Width = width;
+            newButton.Text = rnd.NextDouble().ToString();
+            newButton.MouseDown += (s, e) =>
+            {
+                newButton.DoDragDrop(new ControlWrapper(newButton), DragDropEffects.Move);
+            };
+            newButton.Click += (s, e) =>
+            {
+
+            };
+            return newButton;
         }
     }
 }
