@@ -50,9 +50,16 @@ namespace OmegaBoard
 
             newFlow.DragDrop += (s, e) =>
             {
-                Control userControl = GetControl(e);
-                newFlow.Controls.Add(userControl);
-                MoveCreateButtonToBottomOfLane(newFlow, createButton);
+                if (MouseHelper.DragThresholdMet(Control.MousePosition))
+                {
+                    Control userControl = GetControl(e);
+                    newFlow.Controls.Add(userControl);
+                    MoveCreateButtonToBottomOfLane(newFlow, createButton);
+                }
+                else
+                {
+                    //TODO: This is a click event for the button itself, e. Will need to invoke click event on e.
+                }
             };
 
             //add controls to board
@@ -82,6 +89,7 @@ namespace OmegaBoard
             newButton.Text = rnd.NextDouble().ToString();
             newButton.MouseDown += (s, e) =>
             {
+                MouseHelper.MouseStartPosition = Control.MousePosition;
                 newButton.DoDragDrop(new ControlWrapper(newButton), DragDropEffects.Move);
             };
             newButton.Click += (s, e) =>
