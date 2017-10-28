@@ -9,18 +9,25 @@ namespace OmegaBoard
 {
     public class BoardManager
     {
-        Random rnd = new Random();
-        public void AddLane(FlowLayoutPanel homeBoard, string laneName)
+
+        private Random rnd = new Random();
+        private FlowLayoutPanel _homeBoard;
+
+        public BoardManager(FlowLayoutPanel homeBoard)
+        {
+            _homeBoard = homeBoard;
+        }
+        public void AddLane(string laneName)
         {
             //first get total lanes
-            var existingLanes = homeBoard.Controls;
+            var existingLanes = _homeBoard.Controls;
             var existingNumberofLanes = existingLanes.Count;
             //add new lane
             var newLane = new GroupBox();
             newLane.Name = "Lane" + (existingNumberofLanes + 1);
             newLane.Text = laneName;
             newLane.Width = 200;
-            newLane.Height = homeBoard.Height - 30;
+            newLane.Height = _homeBoard.Height - 30;
             var newFlow = new FlowLayoutPanel();
             newFlow.Name = "Flow" + (existingNumberofLanes + 1);
 
@@ -65,7 +72,14 @@ namespace OmegaBoard
             //add controls to board
             newFlow.Controls.Add(createButton);
             newLane.Controls.Add(newFlow);
-            homeBoard.Controls.Add(newLane);
+            _homeBoard.Controls.Add(newLane);
+        }
+
+        private void GetButtonInsertIndex(FlowLayoutPanel newFlow)
+        {
+            var mouseY = Control.MousePosition.Y;
+            //var cardStartY = newFlow.Controls[0].
+
         }
 
         private void MoveCreateButtonToBottomOfLane(FlowLayoutPanel newFlow, Button createButton)

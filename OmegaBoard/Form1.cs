@@ -19,17 +19,17 @@ namespace OmegaBoard
             InitializeComponent();
             HomeBoard.WrapContents = false;
             HomeBoard.AutoScroll = true;
-            boardManager = new BoardManager();
+            boardManager = new BoardManager(HomeBoard);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            boardManager.AddLane(HomeBoard, "test");
+            boardManager.AddLane("test");
         }
 
         public void AddElement(string elementName)
         {
-            boardManager.AddLane(HomeBoard, "test");
+            boardManager.AddLane("test");
         }
         
     }
