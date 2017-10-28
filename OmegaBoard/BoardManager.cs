@@ -48,10 +48,6 @@ namespace OmegaBoard
             createButton.Click += (s, e) =>
             {
                 newFlow.Controls.Add(CreateDraggableButton(createButton.Width));
-            };
-
-            createButton.Click += (s, e) =>
-            {
                 MoveCreateButtonToBottomOfLane(newFlow, createButton);
             };
 
@@ -61,6 +57,10 @@ namespace OmegaBoard
                 {
                     Control userControl = GetControl(e);
                     newFlow.Controls.Add(userControl);
+                    var point = newFlow.PointToClient(new System.Drawing.Point(e.X, e.Y));
+                    var item = newFlow.GetChildAtPoint(point);
+                    var index = newFlow.Controls.GetChildIndex(item);
+                    newFlow.Controls.SetChildIndex(userControl, index);
                     MoveCreateButtonToBottomOfLane(newFlow, createButton);
                 }
                 else
