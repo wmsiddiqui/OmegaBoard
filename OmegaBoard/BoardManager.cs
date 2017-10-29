@@ -58,9 +58,12 @@ namespace OmegaBoard
                     Control userControl = GetControl(e);
                     newFlow.Controls.Add(userControl);
                     var point = newFlow.PointToClient(new System.Drawing.Point(e.X, e.Y));
-                    var item = newFlow.GetChildAtPoint(point);
-                    var index = newFlow.Controls.GetChildIndex(item);
-                    newFlow.Controls.SetChildIndex(userControl, index);
+                    Control item = GetClosestChildItem(newFlow, point);
+                    if (item != null)
+                    {
+                        var index = newFlow.Controls.GetChildIndex(item);
+                        newFlow.Controls.SetChildIndex(userControl, index);
+                    }
                     MoveCreateButtonToBottomOfLane(newFlow, createButton);
                 }
                 else
@@ -73,6 +76,18 @@ namespace OmegaBoard
             newFlow.Controls.Add(createButton);
             newLane.Controls.Add(newFlow);
             _homeBoard.Controls.Add(newLane);
+        }
+
+        private Control GetClosestChildItem(FlowLayoutPanel newFlow, System.Drawing.Point point)
+        {
+            var childItem = newFlow.GetChildAtPoint(point);
+            if(childItem == null)
+            {
+                var tempPoint = new System.Drawing.Point(point.X, point.Y + 5);
+                childItem = newFlow.GetChildAtPoint(tempPoint);
+            }
+
+            return childItem;
         }
 
         private void GetButtonInsertIndex(FlowLayoutPanel newFlow)
