@@ -30,7 +30,9 @@ namespace OmegaBoard
             newLane.Height = _homeBoard.Height - 30;
             var newFlow = new FlowLayoutPanel();
             newFlow.Name = "Flow" + (existingNumberofLanes + 1);
-
+            newFlow.AutoScroll = true;
+            newFlow.FlowDirection = FlowDirection.TopDown;
+            newFlow.WrapContents = false;
             newFlow.BackColor = System.Drawing.Color.Aqua;
             newFlow.Dock = DockStyle.Fill;
             newFlow.DragEnter += (s, e) =>
@@ -44,7 +46,7 @@ namespace OmegaBoard
             var createButton = new Button();
             createButton.Text = "Add Card";
             createButton.Name = "AddCardButton";
-            createButton.Width = newFlow.Width - 10;
+            createButton.Width = newFlow.Width - 15;
             createButton.Click += (s, e) =>
             {
                 newFlow.Controls.Add(CreateDraggableButton(createButton.Width));
@@ -55,16 +57,7 @@ namespace OmegaBoard
             {
                 if (MouseHelper.DragThresholdMet(Control.MousePosition))
                 {
-                    Control userControl = GetControl(e);
-                    newFlow.Controls.Add(userControl);
-                    var point = newFlow.PointToClient(new System.Drawing.Point(e.X, e.Y));
-                    Control item = GetClosestChildItem(newFlow, point);
-                    if (item != null)
-                    {
-                        var index = newFlow.Controls.GetChildIndex(item);
-                        newFlow.Controls.SetChildIndex(userControl, index);
-                    }
-                    MoveCreateButtonToBottomOfLane(newFlow, createButton);
+                    DragDropMoveCard(e, newFlow, createButton);
                 }
                 else
                 {
@@ -76,6 +69,20 @@ namespace OmegaBoard
             newFlow.Controls.Add(createButton);
             newLane.Controls.Add(newFlow);
             _homeBoard.Controls.Add(newLane);
+        }
+
+        private void DragDropMoveCard(DragEventArgs e, FlowLayoutPanel newFlow, Button createButton)
+        {
+            Control userControl = GetControl(e);
+            newFlow.Controls.Add(userControl);
+            var point = newFlow.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            Control item = GetClosestChildItem(newFlow, point);
+            if (item != null)
+            {
+                var index = newFlow.Controls.GetChildIndex(item);
+                newFlow.Controls.SetChildIndex(userControl, index);
+            }
+            MoveCreateButtonToBottomOfLane(newFlow, createButton);
         }
 
         private Control GetClosestChildItem(FlowLayoutPanel newFlow, System.Drawing.Point point)
@@ -107,7 +114,8 @@ namespace OmegaBoard
         {
             //create temporary button to drag
             var newButton = new Button();
-            newButton.Width = width;
+            //newButton.Width = width;
+            newButton.Dock = DockStyle.Top;
             newButton.Text = rnd.NextDouble().ToString();
             newButton.MouseDown += (s, e) =>
             {
