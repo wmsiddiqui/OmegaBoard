@@ -90,13 +90,6 @@ namespace OmegaBoard
             return childItem;
         }
 
-        private void GetButtonInsertIndex(FlowLayoutPanel newFlow)
-        {
-            var mouseY = Control.MousePosition.Y;
-            //var cardStartY = newFlow.Controls[0].
-
-        }
-
         private void MoveCreateButtonToBottomOfLane(FlowLayoutPanel newFlow, Button createButton)
         {
             newFlow.Controls.Remove(createButton);

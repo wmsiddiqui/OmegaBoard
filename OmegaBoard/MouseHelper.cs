@@ -27,7 +27,7 @@ namespace OmegaBoard
 
         public static bool DragThresholdMet(Point mouseCurrentPosition)
         {
-            if(Math.Abs(mouseCurrentPosition.X - MouseStartPosition.X) > DragThreshold.X &&
+            if(Math.Abs(mouseCurrentPosition.X - MouseStartPosition.X) > DragThreshold.X ||
                Math.Abs(mouseCurrentPosition.Y - MouseStartPosition.Y) > DragThreshold.Y )
             {
                 return true;
