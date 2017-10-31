@@ -13,6 +13,7 @@ namespace OmegaBoard
         private Random rnd = new Random();
         private FlowLayoutPanel _homeBoard;
 
+
         public BoardManager(FlowLayoutPanel homeBoard)
         {
             _homeBoard = homeBoard;
@@ -30,11 +31,34 @@ namespace OmegaBoard
             newLane.Height = _homeBoard.Height - 30;
             var newFlow = new FlowLayoutPanel();
             newFlow.Name = "Flow" + (existingNumberofLanes + 1);
+            newFlow.AutoScroll = false;
+            newFlow.HorizontalScroll.Enabled = false;
+            newFlow.HorizontalScroll.Visible = false;
+            newFlow.HorizontalScroll.Maximum = 0;
             newFlow.AutoScroll = true;
             newFlow.FlowDirection = FlowDirection.TopDown;
             newFlow.WrapContents = false;
             newFlow.BackColor = System.Drawing.Color.Aqua;
             newFlow.Dock = DockStyle.Fill;
+            newFlow.ClientSizeChanged += (s, e) =>
+            {
+                if (newFlow.VerticalScroll.Visible)
+                {
+                    foreach (var control in newFlow.Controls)
+                    {
+                        var controlButton = (Control)control;
+                        controlButton.Width = newFlow.Width - 25;
+                    }
+                }
+                else
+                {
+                    foreach (var control in newFlow.Controls)
+                    {
+                        var controlButton = (Control)control;
+                        controlButton.Width = newFlow.Width - 15;
+                    }
+                }
+            };
             newFlow.DragEnter += (s, e) =>
             {
                 e.Effect = DragDropEffects.Move;
@@ -47,6 +71,8 @@ namespace OmegaBoard
             createButton.Text = "Add Card";
             createButton.Name = "AddCardButton";
             createButton.Width = newFlow.Width - 15;
+            //createButton.AutoSize = true;
+            //createButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             createButton.Click += (s, e) =>
             {
                 newFlow.Controls.Add(CreateDraggableButton(createButton.Width));
@@ -82,6 +108,7 @@ namespace OmegaBoard
                 var index = newFlow.Controls.GetChildIndex(item);
                 newFlow.Controls.SetChildIndex(userControl, index);
             }
+            userControl.Width = newFlow.VerticalScroll.Visible ? newFlow.Width - 25 : newFlow.Width - 15;
             MoveCreateButtonToBottomOfLane(newFlow, createButton);
         }
 
@@ -114,8 +141,10 @@ namespace OmegaBoard
         {
             //create temporary button to drag
             var newButton = new Button();
-            //newButton.Width = width;
-            newButton.Dock = DockStyle.Top;
+            newButton.Width = width;
+            //newButton.Dock = DockStyle.Top;
+            //newButton.AutoSize = true;
+            //newButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             newButton.Text = rnd.NextDouble().ToString();
             newButton.MouseDown += (s, e) =>
             {
