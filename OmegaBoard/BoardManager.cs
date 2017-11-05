@@ -71,8 +71,6 @@ namespace OmegaBoard
             createButton.Text = "Add Card";
             createButton.Name = "AddCardButton";
             createButton.Width = newFlow.Width - 15;
-            //createButton.AutoSize = true;
-            //createButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             createButton.Click += (s, e) =>
             {
                 newFlow.Controls.Add(CreateDraggableButton(createButton.Width));
@@ -142,9 +140,6 @@ namespace OmegaBoard
             //create temporary button to drag
             var newButton = new Button();
             newButton.Width = width;
-            //newButton.Dock = DockStyle.Top;
-            //newButton.AutoSize = true;
-            //newButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             newButton.Text = rnd.NextDouble().ToString();
             newButton.MouseDown += (s, e) =>
             {
