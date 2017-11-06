@@ -29,6 +29,24 @@ namespace OmegaBoard
             newLane.Text = laneName;
             newLane.Width = 200;
             newLane.Height = _homeBoard.Height - 30;
+
+            FlowLayoutPanel newFlow = createNewFlow(existingNumberofLanes);
+            
+            Button createButton = createCreateButton(newFlow);
+
+            newFlow.DragDrop += (s, e) =>
+            {
+                dropCardIntoLane(e, newFlow, createButton);
+            };
+
+            //add controls to board
+            newFlow.Controls.Add(createButton);
+            newLane.Controls.Add(newFlow);
+            _homeBoard.Controls.Add(newLane);
+        }
+
+        private FlowLayoutPanel createNewFlow(int existingNumberofLanes)
+        {
             var newFlow = new FlowLayoutPanel();
             newFlow.Name = "Flow" + (existingNumberofLanes + 1);
             newFlow.AutoScroll = false;
@@ -42,31 +60,50 @@ namespace OmegaBoard
             newFlow.Dock = DockStyle.Fill;
             newFlow.ClientSizeChanged += (s, e) =>
             {
-                if (newFlow.VerticalScroll.Visible)
-                {
-                    foreach (var control in newFlow.Controls)
-                    {
-                        var controlButton = (Control)control;
-                        controlButton.Width = newFlow.Width - 25;
-                    }
-                }
-                else
-                {
-                    foreach (var control in newFlow.Controls)
-                    {
-                        var controlButton = (Control)control;
-                        controlButton.Width = newFlow.Width - 15;
-                    }
-                }
+                resizeCardsInLane(newFlow);
             };
             newFlow.DragEnter += (s, e) =>
             {
                 e.Effect = DragDropEffects.Move;
             };
             newFlow.AllowDrop = true;
+            return newFlow;
+        }
 
+        private void resizeCardsInLane(FlowLayoutPanel newFlow)
+        {
+            if (newFlow.VerticalScroll.Visible)
+            {
+                foreach (var control in newFlow.Controls)
+                {
+                    var controlButton = (Control)control;
+                    controlButton.Width = newFlow.Width - 25;
+                }
+            }
+            else
+            {
+                foreach (var control in newFlow.Controls)
+                {
+                    var controlButton = (Control)control;
+                    controlButton.Width = newFlow.Width - 15;
+                }
+            }
+        }
 
-            //Add Create Button
+        private void dropCardIntoLane(DragEventArgs e, FlowLayoutPanel newFlow, Button createButton)
+        {
+            if (MouseHelper.DragThresholdMet(Control.MousePosition))
+            {
+                DragDropMoveCard(e, newFlow, createButton);
+            }
+            else
+            {
+                //TODO: This is a click event for the button itself, e. Will need to invoke click event on e.
+            }
+        }
+
+        private Button createCreateButton(FlowLayoutPanel newFlow)
+        {
             var createButton = new Button();
             createButton.Text = "Add Card";
             createButton.Name = "AddCardButton";
@@ -76,23 +113,7 @@ namespace OmegaBoard
                 newFlow.Controls.Add(CreateDraggableButton(createButton.Width));
                 MoveCreateButtonToBottomOfLane(newFlow, createButton);
             };
-
-            newFlow.DragDrop += (s, e) =>
-            {
-                if (MouseHelper.DragThresholdMet(Control.MousePosition))
-                {
-                    DragDropMoveCard(e, newFlow, createButton);
-                }
-                else
-                {
-                    //TODO: This is a click event for the button itself, e. Will need to invoke click event on e.
-                }
-            };
-
-            //add controls to board
-            newFlow.Controls.Add(createButton);
-            newLane.Controls.Add(newFlow);
-            _homeBoard.Controls.Add(newLane);
+            return createButton;
         }
 
         private void DragDropMoveCard(DragEventArgs e, FlowLayoutPanel newFlow, Button createButton)
